@@ -1,0 +1,32 @@
+﻿@model List<Rezerwacja>
+
+<h2>Moje Rezerwacje</h2>
+
+@if (Model.Count > 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Nazwa hotelu</th>
+                <th>Numer pokoju</th>
+                <th>Data rozpoczęcia</th>
+                <th>Data zakończenia</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var rezerwacja in Model)
+            {
+                <tr>
+                    <td>@rezerwacja.Pokoj.Hotel.Nazwa</td>
+                    <td>@rezerwacja.Pokoj.NumerPokoju</td>
+                    <td>@rezerwacja.DataPoczatek.ToShortDateString()</td>
+                    <td>@rezerwacja.DataKoniec.ToShortDateString()</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>Brak rezerwacji.</p>
+}

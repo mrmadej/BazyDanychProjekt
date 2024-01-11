@@ -1,0 +1,29 @@
+﻿@model BazyDanychProjekt.Models.LogowanieViewModel
+
+<h2>Logowanie</h2>
+
+<form asp-action="Logowanie" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="form-group">
+        <label asp-for="Login"></label>
+        <input asp-for="Login" class="form-control" />
+        <span asp-validation-for="Login" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Haslo"></label>
+        <input asp-for="Haslo" type="password" class="form-control" />
+        <span asp-validation-for="Haslo" class="text-danger"></span>
+    </div>
+
+    <div class="form-group">
+        <div class="custom-control custom-checkbox">
+            <input asp-for="PamietajMnie" class="custom-control-input" />
+            <label class="custom-control-label" asp-for="PamietajMnie">Pamiętaj mnie</label>
+        </div>
+    </div>
+    <a asp-action="Rejestracja">Zarejestruj sie</a>
+
+    <button type="submit" class="btn btn-primary">Zaloguj</button>
+</form>

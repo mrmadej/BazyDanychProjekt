@@ -1,0 +1,146 @@
+﻿@model BazyDanychProjekt.Models.Hotel
+@inject BazyDanychProjekt.Services.IHoteleService _hoteleService
+@{
+    ViewData["Title"] = "Szczegóły hotelu";
+}
+
+<h2>@Model.Nazwa</h2>
+<p>Kraj: @Model.Kraj</p>
+<p>Miasto: @Model.Miasto</p>
+<p>Opis: @Model.Opis</p>
+<p>Gwiazdki: @Model.Gwiazdki</p>
+
+<!-- Karuzela ze zdjęciami -->
+@if (Model.Zdjecia != null && Model.Zdjecia.Any())
+{
+    <div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+        <ol class="carousel-indicators">
+            @for (int i = 0; i < Model.Zdjecia.Count; i++)
+            {
+                <li data-target="#carouselExampleIndicators" data-slide-to="@i" class="@(i == 0 ? "active" : "")"></li>
+            }
+        </ol>
+        <div class="carousel-inner">
+            @foreach (var zdjecie in Model.Zdjecia)
+            {
+                <div class="carousel-item @(zdjecie == Model.Zdjecia.First() ? "active" : "")">
+                    <img src="@zdjecie.Url" class="d-block w-100" alt="Zdjęcie hotelu">
+                </div>
+            }
+        </div>
+        <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="sr-only">Poprzedni</span>
+        </a>
+        <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="sr-only">Następny</span>
+        </a>
+    </div>
+}
+
+<!-- Wyświetlanie opinii -->
+<h3>Opinie:</h3>
+@if (Model.Opinie != null && Model.Opinie.Any())
+{
+    @foreach (var opinia in Model.Opinie)
+{
+    <div>
+        <p>Autor: @opinia.Uzytkownik.Login</p>
+        <p>Data: @opinia.Data.ToShortDateString()</p>
+        <p>@opinia.Tekst</p>
+    </div>
+}
+
+}
+else
+{
+    <p>Brak opinii</p>
+}
+
+<!-- Formularz do dodawania komentarzy -->
+<h3>Dodaj opinię:</h3>
+<form asp-controller="Opinie" asp-action="DodajOpinie" method="post">
+    <input type="hidden" name="hotelId" value="@Model.Id" />
+    <label for="Tekst">Komentarz:</label>
+    <textarea id="Tekst" name="Tekst" required></textarea>
+    <button type="submit">Dodaj opinię</button>
+</form>
+
+
+<!-- Formularz do rezerwacji pokoju -->
+<h3>Zarezerwuj pokój:</h3>
+<form asp-controller="Rezerwacje" asp-action="DodajRezerwacje" method="post">
+    <input type="hidden" name="hotelId" value="@Model.Id" />
+
+    <label for="DataPoczatek">Data rozpoczęcia:</label>
+    <input type="date" id="DataPoczatek" name="DataPoczatek" required min="@DateTime.Now.ToString("yyyy-MM-dd")" />
+
+    <label for="DataKoniec">Data zakończenia:</label>
+    <input type="date" id="DataKoniec" name="DataKoniec" required min="@DateTime.Now.ToString("yyyy-MM-dd")" oninput="validateDate()" />
+
+    <label for="pokojId">Wybierz pokój:</label>
+    <select id="pokojId" name="pokojId" required onchange="obliczCene()">
+        @foreach (var pokoj in Model.Pokoje)
+        {
+            <option value="@pokoj.Id" data-cena="@pokoj.Cena" data-osoby="@pokoj.LiczbaOsob">@pokoj.Nazwa - Cena: @pokoj.Cena PLN, Osób: @pokoj.LiczbaOsob</option>
+        }
+    </select>
+
+    <p id="cena">Cena: <span id="cenaWartosc"></span> PLN</p>
+
+    <button type="submit">Zarezerwuj</button>
+</form>
+
+@if (ViewBag.BladRezerwacji != null)
+{
+    <div class="alert alert-danger">@ViewBag.BladRezerwacji</div>
+}
+@if (ViewBag.PomyslnaRezerwacja != null)
+{
+    <div class="alert alert-success">@ViewBag.PomyslnaRezerwacja</div>
+}
+
+<script>
+    function obliczCene() {
+        var cenaZaDobe = document.getElementById('pokojId').value.split(" - Cena: ")[1].split(" PLN")[0];
+        var dataRozpoczecia = new Date(document.getElementById('dataRozpoczecia').value);
+        var dataZakonczenia = new Date(document.getElementById('dataZakonczenia').value);
+
+        var roznicaCzasu = Math.abs(dataZakonczenia - dataRozpoczecia);
+        var dniPobytu = Math.ceil(roznicaCzasu / (1000 * 60 * 60 * 24));
+
+        var cena = dniPobytu * cenaZaDobe;
+
+        document.getElementById('cena').innerText = 'Cena za cały pobyt: ' + cena + ' PLN';
+        document.getElementById('cena').style.display = 'block';
+    }
+
+    function obliczCene() {
+        var dataRozpoczecia = new Date(document.getElementById("DataPoczatek").value);
+        var dataZakonczenia = new Date(document.getElementById("DataKoniec").value);
+        var cenaElement = document.getElementById("cenaWartosc");
+        var pokojSelect = document.getElementById("pokojId");
+        var wybranyPokoj = pokojSelect.options[pokojSelect.selectedIndex];
+
+        if (dataRozpoczecia < dataZakonczenia) {
+            var cenaPokoj = parseFloat(wybranyPokoj.getAttribute("data-cena"));
+            var liczbaOsob = parseInt(wybranyPokoj.getAttribute("data-osoby"));
+            var roznicaDni = Math.ceil((dataZakonczenia - dataRozpoczecia) / (1000 * 60 * 60 * 24));
+            var cenaTotal = cenaPokoj * roznicaDni * liczbaOsob;
+
+            cenaElement.innerText = cenaTotal.toFixed(2);
+        } else {
+            cenaElement.innerText = "Błędny okres rezerwacji";
+        }
+    }
+    function validateDate() {
+        var dataPoczatek = document.getElementById('DataPoczatek').value;
+        var dataKoniec = document.getElementById('DataKoniec').value;
+
+        if (dataKoniec < dataPoczatek) {
+            alert('Data zakończenia nie może być wcześniejsza niż data rozpoczęcia.');
+            document.getElementById('DataKoniec').value = dataPoczatek;
+        }
+    }
+</script>

@@ -1,0 +1,15 @@
+﻿@model List<Hotel>
+@inject BazyDanychProjekt.Services.IHoteleService _hoteleService
+
+<h2>Lista hoteli</h2>
+
+@foreach (var hotel in Model)
+{
+    <div>
+        <h3><a asp-action="Szczegoly" asp-route-id="@hotel.Id">@hotel.Nazwa</a></h3>
+        <p>@hotel.Kraj</p>
+        <p>@hotel.Miasto</p>
+        <p>@hotel.Opis</p>
+        <img src="@_hoteleService.GetFirstHotelImage(hotel.Id)" alt="Pierwsze zdjecie hotelu" />
+    </div>
+}

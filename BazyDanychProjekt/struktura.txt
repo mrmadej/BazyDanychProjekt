@@ -1,0 +1,86 @@
+INSERT INTO Hotele (Nazwa, Kraj, Miasto, Gwiazdki, Opis) VALUES
+("Hotel Nadmorski", "Polska", "Gdańsk", 4, "Luksusowy hotel nad Morzem Bałtyckim, oferujący doskonałe warunki do relaksu i rozkoszowania się widokiem na falujące fale. Hotel Nadmorski to miejsce, gdzie elegancja spotyka się z naturą, tworząc niezapomniany pobyt dla każdego gościa."),
+("Hotel Górski", "Polska", "Zakopane", 5, "Elegancki hotel położony w samym sercu Tatr, gdzie przyroda i luksus łączą się w idealnej harmonii. Oferujący niezapomniane widoki na majestatyczne góry, Hotel Górski to raj dla miłośników natury i komfortowego wypoczynku."),
+("Hotel Morski Zew", "Polska", "Sopot", 4, "Nowoczesny hotel z bezpośrednim dostępem do piaszczystej plaży i zaledwie kilka kroków od słynnego Molo w Sopocie. Hotel Morski Zew to idealne miejsce dla tych, którzy pragną spędzić urlop w luksusie, ciesząc się jednocześnie morskimi widokami."),
+("Hotel Krakowski", "Polska", "Kraków", 3, "Komfortowy hotel położony w sercu historycznego Krakowa, zaledwie kilka minut spacerem od Wawelu i Rynku Głównego. Hotel Krakowski to doskonałe miejsce dla tych, którzy chcą odkrywać uroki miasta pełnego historii i kultury."),
+("Hotel Zielony Park", "Polska", "Poznań", 4, "Otoczony zielenią parku, Hotel Zielony Park oferuje spokój i relaks w samym sercu Poznania. Idealny dla osób ceniących naturę i pragnących wypoczynku z dala od zgiełku miejskiego."),
+("Hotel Panorama", "Polska", "Warszawa", 5, "Najwyższej klasy hotel z panoramicznym widokiem na malowniczą stolicę Polski. Luksus, elegancja i doskonała obsługa sprawiają, że Hotel Panorama to miejsce, gdzie każdy gość czuje się wyjątkowo."),
+("Hotel Nad Jezioro", "Polska", "Mazury", 3, "Przytulny hotel położony nad brzegiem malowniczego jeziora, oferujący doskonałe warunki do odpoczynku i aktywnego spędzania czasu nad wodą. Hotel Nad Jezioro to idealne miejsce dla miłośników natury i sportów wodnych."),
+("Hotel Zakątek Spa", "Polska", "Szczecin", 4, "Hotel Zakątek Spa to miejsce, gdzie relaks i odprężenie łączą się w harmonijną całość. Oferując kompleksowe usługi spa, hotel zapewnia gościom możliwość regeneracji zarówno ciała, jak i duszy."),
+("Hotel Wschodzące Słońce", "Polska", "Bieszczady", 3, "Urokliwy hotel położony w sercu Bieszczad, otoczony malowniczymi szlakami górskimi. Hotel Wschodzące Słońce to doskonałe miejsce dla miłośników trekkingu i tych, którzy pragną zanurzyć się w pięknie przyrody."),
+("Hotel Różany Sad", "Polska", "Wrocław", 5, "Piękny hotel otoczony wonnymi różanymi ogrodami, zapewniający gościom niepowtarzalny klimat i romantyczną atmosferę. Hotel Różany Sad to idealne miejsce dla par pragnących spędzić czas we dwoje w magicznym otoczeniu.");
+
+INSERT INTO Zdjecia (Url, HotelId) VALUES
+("https://www.ahstatic.com/photos/0523_ho_00_p_2048x1536.jpg?frz-v=10105", 1),
+("https://th.bing.com/th/id/R.4331502515dac881bfb3f82884983035?rik=aUI8XcCFSCbOsQ&pid=ImgRaw&r=0", 1),
+("https://zakopaneapartamenty.net/wp-content/uploads/2020/05/goralski-szyk_22-scaled.jpg", 2),
+("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/04/ad/8c/9f/hotel-gorski-kalatowki.jpg?w=900&h=-1&s=1", 2),
+("https://th.bing.com/th/id/OIP.fbN4JFzos1oAUwfHa6PNEgHaE8?rs=1&pid=ImgDetMain", 3),
+("https://media-cdn.holidaycheck.com/w_1280,h_720,c_fill,q_80/ugc/images/e0277adb-ef86-42f6-bf14-0028c9f8c228", 3),
+("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/be/bb/b0/stradom-house-autograph.jpg?w=1200&h=-1&s=1", 4),
+("https://dynamic-media-cdn.tripadvisor.com/media/photo-o/29/be/c8/f5/john-dory-seafood-restaurant.jpg?w=1200&h=-1&s=1", 4),
+("https://hotelzielony.pl/wsCMS/uploads/images/slides/hotel-poznan-slajd2.jpg", 5),
+("https://hotelzielony.pl/wsCMS/uploads/images/hotel-zielony-pokoj-1-osobowy-2.jpg", 5),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/356679896.jpg?k=00472c1795b5c0a2d080fef3ee392747cd44b66a16a49184e649e955a82ae540&o=&hp=1", 6),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/67589453.jpg?k=d829dc154d968720ec809d39f69276f5cd54be0b20e8a4fd9c32862c9d2c40f1&o=&hp=1", 6),
+("https://stardadaj.pl/wp-content/uploads/2017/11/baner-hotel.jpg", 7),
+("https://stardadaj.pl/wp-content/uploads/2022/04/dadaj_kontakt.jpg", 7),
+("https://u.profitroom.pl/2017.hoteldana.pl/thumb/500x400/uploads/DJI_0504.jpeg", 8),
+("https://u.profitroom.pl/2017.hoteldana.pl/thumb/500x400/uploads/Dana16.jpg", 8),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/163842579.jpg?k=009b6d0fb6d0fde3bb121727ee69f78473496427d06269e8c84bacd6fa644eb7&o=&hp=1", 9),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/352147007.jpg?k=179dedf697db5b2f14ecd4a7cff4aa6bbe1f96bfc3ec7fe106425294ed4ecbaf&o=&hp=1", 9),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/217773809.jpg?k=bce7315d8057b10d7e43d373d05c214d3cf1a8d30ae1c1c942233abb8b6f716a&o=&hp=1", 10),
+("https://cf.bstatic.com/xdata/images/hotel/max1024x768/217773912.jpg?k=0cc91bfd8bbabe100047b6f5e727a5a7762c17f6ee2c05fb983ebd905a9d5d23&o=&hp=1", 10);
+
+INSERT INTO Pokoj (Nazwa, NumerPokoju, TypPokoju, LiczbaOsob, Cena, HotelId) VALUES
+  -- Hotel Nadmorski
+  ("Pokój Standardowy", "101", "Double", 2, 300.00, 1),
+  ("Apartament Deluxe", "202", "Suite", 3, 500.00, 1),
+  ("Pokój z widokiem na morze", "303", "Double", 2, 400.00, 1),
+
+  -- Hotel Górski
+  ("Pokój Superior", "102", "Double", 2, 350.00, 2),
+  ("Apartament Górski", "203", "Suite", 4, 600.00, 2),
+  ("Pokój Panoramiczny", "304", "Double", 2, 450.00, 2),
+
+  -- Hotel Morski Zew
+  ("Pokój z balkonem", "103", "Double", 2, 380.00, 3),
+  ("Apartament Morski", "204", "Suite", 3, 550.00, 3),
+  ("Pokój Rodzinny", "305", "Family", 4, 480.00, 3),
+
+  -- Hotel Krakowski
+  ("Pokój Standardowy", "104", "Double", 2, 320.00, 4),
+  ("Apartament Królewski", "205", "Suite", 3, 520.00, 4),
+  ("Pokój Single", "306", "Single", 1, 250.00, 4),
+
+  -- Hotel Zielony Park
+  ("Pokój Deluxe", "105", "Double", 2, 370.00, 5),
+  ("Apartament Parkowy", "206", "Suite", 3, 580.00, 5),
+  ("Pokój z tarasem", "307", "Double", 2, 420.00, 5),
+
+  -- Hotel Panorama
+  ("Pokój Executive", "106", "Double", 2, 430.00, 6),
+  ("Apartament Panoramiczny", "207", "Suite", 4, 650.00, 6),
+  ("Pokój VIP", "308", "Double", 2, 500.00, 6),
+
+  -- Hotel Nad Jezioro
+  ("Pokój z widokiem na jezioro", "107", "Double", 2, 340.00, 7),
+  ("Apartament Nad Jezioro", "208", "Suite", 3, 520.00, 7),
+  ("Pokój z dostępem do plaży", "309", "Double", 2, 450.00, 7),
+
+  -- Hotel Zakątek Spa
+  ("Pokój Relaksacyjny", "108", "Double", 2, 400.00, 8),
+  ("Apartament Spa", "209", "Suite", 3, 600.00, 8),
+  ("Pokój z jacuzzi", "310", "Double", 2, 480.00, 8),
+
+  -- Hotel Wschodzące Słońce
+  ("Pokój Górski", "109", "Double", 2, 360.00, 9),
+  ("Apartament Bieszczadzki", "210", "Suite", 4, 550.00, 9),
+  ("Pokój z kominkiem", "311", "Double", 2, 420.00, 9),
+
+  -- Hotel Różany Sad
+  ("Pokój romantyczny", "110", "Double", 2, 380.00, 10),
+  ("Apartament Różany", "211", "Suite", 3, 580.00, 10),
+  ("Pokój z ogrodem", "312", "Double", 2, 450.00, 10);
+
+  INSERT INTO Uzytkownik (Login, Haslo, Imie, Nazwisko, Rola) VALUES ("admin", "$2y$10$q27Aq5HRzhLQ6Yoi4wDTo.Y86WTbZNk1XMyZXWA8jAXuOAdh7FxT6", "Jan", "Nowak", "ADMIN");
