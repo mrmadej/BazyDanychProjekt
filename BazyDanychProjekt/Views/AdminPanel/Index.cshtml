@@ -1,0 +1,27 @@
+﻿@model List<Hotel> // Zakładam, że Hotel to model używany w Twojej aplikacji
+
+<h2>Lista Hoteli</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nazwa</th>
+            <th>Modyfikuj</th>
+            <th>Usuń</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var hotel in Model)
+        {
+            <tr>
+                <td>@hotel.Nazwa</td>
+                <td>
+                    <a asp-action="EdytujHotel" asp-route-id="@hotel.Id">Modyfikuj</a>
+                </td>
+                <td>
+                    <a asp-action="UsunHotel" asp-route-id="@hotel.Id">Usuń</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
