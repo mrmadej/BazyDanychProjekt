@@ -22,22 +22,42 @@ namespace BazyDanychProjekt.Controllers
         }
 
         // Dodawanie nowego hotelu - GET
-        public IActionResult DodajHotel()
-        {
-            return View();
-        }
+        //public IActionResult DodajHotel()
+        //{
+        //    return View();
+        //}
 
         // Dodawanie nowego hotelu - POST
         [HttpPost]
-        public async Task<IActionResult> DodajHotel(Hotel hotel)
+        public async Task<IActionResult> DodajHotel(DodajHotelViewModel model)
         {
-            if (ModelState.IsValid)
+            var hotel = new Hotel
             {
-                _context.Hotele.Add(hotel);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(hotel);
+                Nazwa = model.Nazwa,
+                Kraj = model.Kraj,
+                Miasto = model.Miasto,
+                Gwiazdki = model.Gwiazdki,
+                Opis = model.Opis
+            };
+            _context.Hotele.Add(hotel);
+            await _context.SaveChangesAsync();
+
+            // Teraz hotel ma przypisany identyfikator po zapisaniu w bazie danych
+            int dodanyHotelId = hotel.Id;
+
+            // Tutaj możesz użyć dodanyHotelId do zapisania zdjęcia w bazie danych
+            // Na przykład, jeśli masz model Hotel zawierający kolekcję zdjęć, możesz dodać nowe zdjęcie dla hotelu.
+
+            // Przykładowa logika dodawania zdjęcia:
+            var zdjecie = new Zdjecie
+            {
+                HotelId = dodanyHotelId,
+                Url = model.url
+            };
+            _context.Zdjecia.Add(zdjecie);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(Index));
         }
 
         // Edytowanie istniejącego hotelu - GET

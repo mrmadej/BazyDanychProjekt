@@ -25,3 +25,35 @@
         }
     </tbody>
 </table>
+
+<h2>Dodaj nowy hotel</h2>
+
+<form asp-action="DodajHotel" method="post">
+    <div>
+        <label for="nazwa">Nazwa:</label>
+        <input type="text" id="nazwa" name="nazwa" required />
+    </div>
+    <div>
+        <label for="kraj">Kraj:</label>
+        <input type="text" id="kraj" name="kraj" required />
+    </div>
+    <div>
+        <label for="miasto">Miasto:</label>
+        <input type="text" id="miasto" name="miasto" required />
+    </div>
+    <div>
+        <label for="gwiazdki">Gwiazdki:</label>
+        <input type="number" id="gwiazdki" name="gwiazdki" required />
+    </div>
+    <div>
+        <label for="opis">Opis:</label>
+        <textarea id="opis" name="opis" required></textarea>
+    </div>
+    <div>
+        <label for="url">URL do zdjęcia:</label>
+        <input type="url" id="url" name="url" required />
+    </div>
+    <div>
+        <button type="submit">Dodaj hotel</button>
+    </div>
+</form>
