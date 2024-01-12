@@ -1,0 +1,26 @@
+﻿@model BazyDanychProjekt.Models.Hotel
+
+<h2>Edytuj Hotel</h2>
+
+<form asp-action="EdytujHotel" method="post">
+    <!-- Formularz edycji informacji o hotelu -->
+    <label for="Nazwa">Nazwa:</label>
+    <input type="text" id="Nazwa" name="Nazwa" value="@Model.Nazwa" required />
+
+    <label for="Kraj">Kraj:</label>
+    <input type="text" id="Kraj" name="Kraj" value="@Model.Kraj" required />
+
+    <label for="Miasto">Miasto:</label>
+    <input type="text" id="Miasto" name="Miasto" value="@Model.Miasto" required />
+
+    <label for="Gwiazdki">Gwiazdki:</label>
+    <input type="number" id="Gwiazdki" name="Gwiazdki" value="@Model.Gwiazdki" required />
+
+    <label for="Opis">Opis:</label>
+    <textarea id="Opis" name="Opis" required>@Model.Opis</textarea>
+
+    <button type="submit">Zaktualizuj</button>
+</form>
+
+<!-- Przycisk do przejścia do edycji zdjęć -->
+<a asp-action="EdytujZdjeciaHotelu" asp-route-id="@Model.Id">Edytuj Zdjęcia</a>

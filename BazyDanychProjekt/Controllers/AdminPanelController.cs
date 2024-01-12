@@ -68,7 +68,11 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            var hotel = await _context.Hotele.FindAsync(id);
+            var hotel = await _context.Hotele
+                .Include(h => h.Zdjecia) // Dodaj to, jeśli chcesz pobrać zdjęcia razem z hotelem
+                .Include(h => h.Pokoje)  // Dodaj to, jeśli chcesz pobrać pokoje razem z hotelem
+                .FirstOrDefaultAsync(m => m.Id == id);
+
             if (hotel == null)
             {
                 return NotFound();
@@ -86,8 +90,8 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 try
                 {
                     _context.Entry(hotel).State = EntityState.Modified;
@@ -105,9 +109,58 @@ namespace BazyDanychProjekt.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
+            //}
+        }
+
+        public async Task<IActionResult> EdytujZdjeciaHotelu(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
             }
+
+            var hotel = await _context.Hotele
+                .Include(h => h.Zdjecia)
+                .FirstOrDefaultAsync(m => m.Id == id);
+
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
             return View(hotel);
         }
+
+    [HttpPost]
+    public async Task<IActionResult> EdytujZdjeciaHotelu(int id, Hotel hotel)
+    {
+        if (id != hotel.Id)
+        {
+            return NotFound();
+        }
+
+        //if (ModelState.IsValid)
+        //{
+            try
+            {
+                _context.Entry(hotel).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!HotelExists(hotel.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        //}
+        return View(hotel);
+    }
 
         // Usuwanie hotelu - GET
         public async Task<IActionResult> UsunHotel(int? id)

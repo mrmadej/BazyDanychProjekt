@@ -1,0 +1,21 @@
+﻿@model BazyDanychProjekt.Models.Hotel
+
+<h2>Edytuj Zdjęcia Hotelu</h2>
+
+<form asp-action="EdytujZdjeciaHotelu" method="post">
+    <!-- Formularz edycji zdjęć -->
+    <label for="ZdjecieUrl">Nowe Zdjęcie (URL):</label>
+    <input type="text" id="ZdjecieUrl" name="ZdjecieUrl" required />
+
+    <button type="submit">Dodaj Zdjęcie</button>
+</form>
+
+<!-- Lista aktualnych zdjęć -->
+<h3>Aktualne Zdjęcia:</h3>
+@foreach (var zdjecie in Model.Zdjecia)
+{
+        <div>
+            <img src="@zdjecie.Url" alt="Zdjęcie" width="100" height="100" />
+            <a asp-action="UsunZdjecie" asp-route-id="@zdjecie.Id">Usuń Zdjęcie</a>
+        </div>
+}
