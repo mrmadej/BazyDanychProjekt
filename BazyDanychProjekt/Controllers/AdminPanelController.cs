@@ -129,11 +129,43 @@ namespace BazyDanychProjekt.Controllers
 
         // Usuwanie hotelu - POST
         [HttpPost, ActionName("UsunHotel")]
+        [ValidateAntiForgeryToken] // Dodaj atrybut zabezpieczający przed atakami CSRF
         public async Task<IActionResult> PotwierdzUsuniecieHotelu(int id)
         {
             var hotel = await _context.Hotele.FindAsync(id);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            // Przypisz do modelu inne powiązane encje przed wyświetleniem widoku potwierdzenia
+            hotel.Pokoje = await _context.Pokoj.Where(p => p.HotelId == id).ToListAsync();
+            hotel.Opinie = await _context.Opinia.Where(o => o.HotelId == id).ToListAsync();
+
+            return View(hotel);
+        }
+
+        // Potwierdzenie usuwania hotelu - POST
+        [HttpPost]
+        [ValidateAntiForgeryToken] // Dodaj atrybut zabezpieczający przed atakami CSRF
+        public async Task<IActionResult> PotwierdzUsuniecieHoteluPotwierdzenie(int id)
+        {
+            var hotel = await _context.Hotele.FindAsync(id);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            // Usuń powiązane encje przed usunięciem hotelu
+            var pokoje = await _context.Pokoj.Where(p => p.HotelId == id).ToListAsync();
+            var opinie = await _context.Opinia.Where(o => o.HotelId == id).ToListAsync();
+
+            _context.Pokoj.RemoveRange(pokoje);
+            _context.Opinia.RemoveRange(opinie);
+
             _context.Hotele.Remove(hotel);
             await _context.SaveChangesAsync();
+
             return RedirectToAction(nameof(Index));
         }
 
