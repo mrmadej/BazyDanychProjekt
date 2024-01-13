@@ -1,0 +1,26 @@
+﻿@model BazyDanychProjekt.Models.Pokoj
+
+<h2>Edytuj Pokój</h2>
+
+<form asp-action="EdytujPokoj" method="post">
+    <input type="hidden" asp-for="Id" />
+    <input type="hidden" asp-for="HotelId" />
+
+    <label for="Nazwa">Nazwa:</label>
+    <input type="text" id="Nazwa" name="Nazwa" value="@Model.Nazwa" required />
+
+    <label for="NumerPokoju">Numer Pokoju:</label>
+    <input type="text" id="NumerPokoju" name="NumerPokoju" value="@Model.NumerPokoju" required />
+
+    <label for="TypPokoju">Typ Pokoju:</label>
+    <input type="text" id="TypPokoju" name="TypPokoju" value="@Model.TypPokoju" required />
+
+    <label for="LiczbaOsob">Liczba Osób:</label>
+    <input type="number" id="LiczbaOsob" name="LiczbaOsob" value="@Model.LiczbaOsob" required />
+
+    <label for="Cena">Cena:</label>
+    <input type="number" id="Cena" name="Cena" value="@Model.Cena" required />
+
+    <button type="submit">Zaktualizuj</button>
+</form>
+<a asp-action="WyswietlPokoje" asp-route-hotelId="@Model.Hotel.Id">Edytuj Pokoje</a>

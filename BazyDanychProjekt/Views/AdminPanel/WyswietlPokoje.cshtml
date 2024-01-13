@@ -34,6 +34,7 @@
 <!-- Formularz do dodawania nowego pokoju -->
 <h3>Dodaj nowy pokój:</h3>
 <form asp-action="DodajPokoj" method="post">
+    <input type="hidden" id="HotelId" name="HotelId" value="@ViewBag.HotelId" />
     <label for="Nazwa">Nazwa:</label>
     <input type="text" id="Nazwa" name="Nazwa" required />
 

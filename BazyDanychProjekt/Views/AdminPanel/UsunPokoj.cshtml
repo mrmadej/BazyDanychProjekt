@@ -1,0 +1,18 @@
+﻿@model BazyDanychProjekt.Models.Pokoj
+
+<h2>Czy na pewno chcesz usunąć ten pokój?</h2>
+
+<div>
+    <!-- Wyświetl informacje o pokoju, które zostaną usunięte -->
+    <p>Nazwa: @Model.Nazwa</p>
+    <p>Numer Pokoju: @Model.NumerPokoju</p>
+    <p>Typ Pokoju: @Model.TypPokoju</p>
+    <p>Liczba Osób: @Model.LiczbaOsob</p>
+    <p>Cena: @Model.Cena</p>
+</div>
+
+<!-- Formularz potwierdzający usuwanie -->
+<form asp-action="PotwierdzUsunieciePokoj" asp-route-pokojId="@Model.Id" method="post">
+    <button type="submit">Tak, usuń pokój</button>
+    <a asp-action="WyswietlPokoje" asp-route-hotelId="@Model.HotelId">Anuluj</a>
+</form>

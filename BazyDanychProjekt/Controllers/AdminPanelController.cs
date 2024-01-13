@@ -258,22 +258,107 @@ namespace BazyDanychProjekt.Controllers
                 .Where(p => p.HotelId == hotelId)
                 .Include(p => p.Hotel)
                 .ToListAsync();
-
+            ViewBag.HotelId = hotelId;
             return View(pokoje);
         }
 
         [HttpPost]
-        public async Task<IActionResult> DodajPokoj(Pokoj nowyPokoj)
+        public async Task<IActionResult> DodajPokoj(DodajPokojViewModel nowyPokoj)
         {
 
-                // Tutaj możesz dodać logikę sprawdzającą unikalność numeru pokoju, etc.
+            // Tutaj możesz dodać logikę sprawdzającą unikalność numeru pokoju, etc.
+            var pokoj = new Pokoj
+            {
+                Nazwa = nowyPokoj.Nazwa,
+                TypPokoju = nowyPokoj.TypPokoju,
+                NumerPokoju = nowyPokoj.NumerPokoju,
+                LiczbaOsob = nowyPokoj.LiczbaOsob,
+                Cena = nowyPokoj.Cena,
+                HotelId = nowyPokoj.HotelId,
+            };
 
-            _context.Pokoj.Add(nowyPokoj);
+            _context.Pokoj.Add(pokoj);
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(WyswietlPokoje), new { hotelId = nowyPokoj.HotelId });
 
             // Jeśli ModelState.IsValid nie jest spełniony, wróć do widoku z błędami
+        }
+
+        // Usuwanie pokoju - GET
+        public async Task<IActionResult> UsunPokoj(int? pokojId)
+        {
+            if (pokojId == null)
+            {
+                return NotFound();
+            }
+
+            var pokoj = await _context.Pokoj.FindAsync(pokojId);
+
+            if (pokoj == null)
+            {
+                return NotFound();
+            }
+
+            return View(pokoj);
+        }
+
+        // Usuwanie pokoju - POST
+        [HttpPost]
+        public async Task<IActionResult> PotwierdzUsunieciePokoj(int pokojId)
+        {
+            var pokoj = await _context.Pokoj.FindAsync(pokojId);
+
+            if (pokoj == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pokoj.Remove(pokoj);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(WyswietlPokoje), new { hotelId = pokoj.HotelId });
+        }
+
+
+        // Edytowanie istniejącego pokoju - GET
+        public async Task<IActionResult> EdytujPokoj(int? pokojId)
+        {
+            if (pokojId == null)
+            {
+                return NotFound();
+            }
+
+            var pokoj = await _context.Pokoj
+                .Include(p => p.Hotel) // Dodaj Include, aby pobrać obiekt Hotel wraz z pokojem
+                .FirstOrDefaultAsync(p => p.Id == pokojId);
+
+            if (pokoj == null)
+            {
+                return NotFound();
+            }
+
+            // Teraz masz dostęp do obiektu Hotel bezpośrednio z obiektu Pokoj
+            var hotelId = pokoj.HotelId;
+
+            return View(pokoj);
+        }
+
+        // Edytowanie istniejącego pokoju - POST
+        [HttpPost]
+        public async Task<IActionResult> EdytujPokoj(Pokoj pokoj)
+        {
+            try
+            {
+                _context.Entry(pokoj).State = EntityState.Modified;
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                return NotFound();
+            }
+            // Po zaktualizowaniu pokoju, przenieś użytkownika do listy pokoi danego hotelu
+            return RedirectToAction("WyswietlPokoje", new { hotelId = pokoj.HotelId });
         }
 
     }
