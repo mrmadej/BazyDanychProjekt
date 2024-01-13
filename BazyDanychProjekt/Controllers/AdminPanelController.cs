@@ -131,36 +131,61 @@ namespace BazyDanychProjekt.Controllers
             return View(hotel);
         }
 
-    [HttpPost]
-    public async Task<IActionResult> EdytujZdjeciaHotelu(int id, Hotel hotel)
-    {
-        if (id != hotel.Id)
+        [HttpPost]
+        public async Task<IActionResult> EdytujZdjeciaHotelu(int hotelId, string url)
         {
-            return NotFound();
+            var hotel = await _context.Hotele.Include(h => h.Zdjecia).FirstOrDefaultAsync(h => h.Id == hotelId);
+            if (hotel == null)
+            {
+                return NotFound();
+            }
+
+            // Dodaj nowe zdjęcie
+            var noweZdjecie = new Zdjecie { Url = url };
+            hotel.Zdjecia.Add(noweZdjecie);
+
+            // Zapisz zmiany w bazie danych
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(EdytujZdjeciaHotelu), new { id = hotelId });
         }
 
-        //if (ModelState.IsValid)
-        //{
-            try
+        // Usuwanie zdjęcia - GET
+        public async Task<IActionResult> UsunZdjecie(int? zdjecieId)
+        {
+            if (zdjecieId == null)
             {
-                _context.Entry(hotel).State = EntityState.Modified;
-                await _context.SaveChangesAsync();
+                return NotFound();
             }
-            catch (DbUpdateConcurrencyException)
+
+            var zdjecie = await _context.Zdjecia.FindAsync(zdjecieId);
+            if (zdjecie == null)
             {
-                if (!HotelExists(hotel.Id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                return NotFound();
             }
-            return RedirectToAction(nameof(Index));
-        //}
-        return View(hotel);
-    }
+
+            // Przekazanie idHotelu do potwierdzenia usuwania
+            ViewData["idHotelu"] = zdjecie.HotelId;
+
+            return View(zdjecie);
+        }
+
+        // Potwierdzenie usunięcia zdjęcia - POST
+        [HttpPost]
+        public async Task<IActionResult> PotwierdzUsuniecieZdjecia(int zdjecieId, int idHotelu)
+        {
+            var zdjecie = await _context.Zdjecia.FindAsync(zdjecieId);
+            if (zdjecie == null)
+            {
+                return NotFound();
+            }
+
+            _context.Zdjecia.Remove(zdjecie);
+            await _context.SaveChangesAsync();
+
+            // Przekierowanie do EdytujZdjeciaHotelu z przekazanym idHotelu
+            return RedirectToAction(nameof(EdytujZdjeciaHotelu), new { id = idHotelu });
+        }
 
         // Usuwanie hotelu - GET
         public async Task<IActionResult> UsunHotel(int? id)

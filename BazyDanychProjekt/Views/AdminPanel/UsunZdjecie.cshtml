@@ -1,0 +1,12 @@
+﻿@model BazyDanychProjekt.Models.Zdjecie
+
+<h2>Czy na pewno chcesz usunąć to zdjęcie?</h2>
+
+<div>
+    <img src="@Model.Url" alt="Zdjęcie" width="100" height="100" />
+</div>
+
+<form asp-action="PotwierdzUsuniecieZdjecia" asp-route-zdjecieId="@Model.Id" asp-route-idHotelu="@ViewData["idHotelu"]" method="post">
+    <button type="submit">Tak, usuń zdjęcie</button>
+    <a asp-action="EdytujZdjeciaHotelu" asp-route-id="@ViewData["idHotelu"]">Anuluj</a>
+</form>
