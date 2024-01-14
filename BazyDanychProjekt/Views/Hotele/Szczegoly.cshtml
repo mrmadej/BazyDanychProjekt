@@ -4,6 +4,89 @@
     ViewData["Title"] = "Szczegóły hotelu";
 }
 
+<style>
+    form {
+        margin-bottom: 20px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    input,
+    select,
+    textarea {
+        width: 100%;
+        padding: 8px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+
+    button {
+        background-color: #4CAF50;
+        color: white;
+        padding: 10px 15px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+    /* Dodaj styl dla alertów */
+    .alert {
+        padding: 15px;
+        margin-bottom: 15px;
+        border: 1px solid transparent;
+        border-radius: 4px;
+    }
+
+    .alert-danger {
+        background-color: #f2dede;
+        border-color: #ebccd1;
+        color: #a94442;
+    }
+
+    .alert-success {
+        background-color: #dff0d8;
+        border-color: #d6e9c6;
+        color: #3c763d;
+    }
+
+    .opinie-section {
+        margin-top: 20px;
+    }
+
+    .opinia {
+        border: 1px solid #ddd;
+        padding: 15px;
+        margin-bottom: 15px;
+        border-radius: 5px;
+    }
+
+    .opinia-author {
+        font-weight: bold;
+        margin-bottom: 5px;
+    }
+
+    .opinia-date {
+        color: #888;
+        margin-bottom: 10px;
+    }
+
+    .opinia-text {
+        line-height: 1.5;
+    }
+
+    .brak-opinii {
+        font-style: italic;
+        color: #888;
+    }
+</style>
+
 <h2>@Model.Nazwa</h2>
 <p>Kraj: @Model.Kraj</p>
 <p>Miasto: @Model.Miasto</p>
@@ -34,29 +117,30 @@
         </a>
         <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
             <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Następny</span>
+            <span class="sr-only">Następnyf</span>
         </a>
     </div>
 }
 
 <!-- Wyświetlanie opinii -->
-<h3>Opinie:</h3>
-@if (Model.Opinie != null && Model.Opinie.Any())
-{
-    @foreach (var opinia in Model.Opinie)
-{
-    <div>
-        <p>Autor: @opinia.Uzytkownik.Login</p>
-        <p>Data: @opinia.Data.ToShortDateString()</p>
-        <p>@opinia.Tekst</p>
-    </div>
-}
-
-}
-else
-{
-    <p>Brak opinii</p>
-}
+<div class="opinie-section">
+    <h3>Opinie:</h3>
+    @if (Model.Opinie != null && Model.Opinie.Any())
+    {
+        @foreach (var opinia in Model.Opinie)
+        {
+            <div class="opinia">
+                <p class="opinia-author">Autor: @opinia.Uzytkownik.Login</p>
+                <p class="opinia-date">Data: @opinia.Data.ToShortDateString()</p>
+                <p class="opinia-text">@opinia.Tekst</p>
+            </div>
+        }
+    }
+    else
+    {
+        <p class="brak-opinii">Brak opinii</p>
+    }
+</div>
 
 <!-- Formularz do dodawania komentarzy -->
 <h3>Dodaj opinię:</h3>
@@ -66,7 +150,6 @@ else
     <textarea id="Tekst" name="Tekst" required></textarea>
     <button type="submit">Dodaj opinię</button>
 </form>
-
 
 <!-- Formularz do rezerwacji pokoju -->
 <h3>Zarezerwuj pokój:</h3>
