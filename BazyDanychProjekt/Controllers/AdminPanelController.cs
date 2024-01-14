@@ -1,10 +1,12 @@
 ﻿using BazyDanychProjekt.Data;
 using BazyDanychProjekt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BazyDanychProjekt.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminPanelController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -14,20 +16,12 @@ namespace BazyDanychProjekt.Controllers
             _context = context;
         }
 
-        // Wyświetlanie wszystkich hoteli
         public async Task<IActionResult> Index()
         {
             var hotele = await _context.Hotele.ToListAsync();
             return View(hotele);
         }
 
-        // Dodawanie nowego hotelu - GET
-        //public IActionResult DodajHotel()
-        //{
-        //    return View();
-        //}
-
-        // Dodawanie nowego hotelu - POST
         [HttpPost]
         public async Task<IActionResult> DodajHotel(DodajHotelViewModel model)
         {
@@ -42,13 +36,8 @@ namespace BazyDanychProjekt.Controllers
             _context.Hotele.Add(hotel);
             await _context.SaveChangesAsync();
 
-            // Teraz hotel ma przypisany identyfikator po zapisaniu w bazie danych
             int dodanyHotelId = hotel.Id;
 
-            // Tutaj możesz użyć dodanyHotelId do zapisania zdjęcia w bazie danych
-            // Na przykład, jeśli masz model Hotel zawierający kolekcję zdjęć, możesz dodać nowe zdjęcie dla hotelu.
-
-            // Przykładowa logika dodawania zdjęcia:
             var zdjecie = new Zdjecie
             {
                 HotelId = dodanyHotelId,
@@ -60,7 +49,6 @@ namespace BazyDanychProjekt.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        // Edytowanie istniejącego hotelu - GET
         public async Task<IActionResult> EdytujHotel(int? id)
         {
             if (id == null)
@@ -69,8 +57,8 @@ namespace BazyDanychProjekt.Controllers
             }
 
             var hotel = await _context.Hotele
-                .Include(h => h.Zdjecia) // Dodaj to, jeśli chcesz pobrać zdjęcia razem z hotelem
-                .Include(h => h.Pokoje)  // Dodaj to, jeśli chcesz pobrać pokoje razem z hotelem
+                .Include(h => h.Zdjecia)
+                .Include(h => h.Pokoje)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
             if (hotel == null)
@@ -81,7 +69,6 @@ namespace BazyDanychProjekt.Controllers
             return View(hotel);
         }
 
-        // Edytowanie istniejącego hotelu - POST
         [HttpPost]
         public async Task<IActionResult> EdytujHotel(int id, Hotel hotel)
         {
@@ -90,8 +77,6 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            //if (ModelState.IsValid)
-            //{
                 try
                 {
                     _context.Entry(hotel).State = EntityState.Modified;
@@ -109,7 +94,6 @@ namespace BazyDanychProjekt.Controllers
                     }
                 }
                 return RedirectToAction(nameof(Index));
-            //}
         }
 
         public async Task<IActionResult> EdytujZdjeciaHotelu(int? id)
@@ -140,17 +124,14 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            // Dodaj nowe zdjęcie
             var noweZdjecie = new Zdjecie { Url = url };
             hotel.Zdjecia.Add(noweZdjecie);
 
-            // Zapisz zmiany w bazie danych
             await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(EdytujZdjeciaHotelu), new { id = hotelId });
         }
 
-        // Usuwanie zdjęcia - GET
         public async Task<IActionResult> UsunZdjecie(int? zdjecieId)
         {
             if (zdjecieId == null)
@@ -164,13 +145,11 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            // Przekazanie idHotelu do potwierdzenia usuwania
             ViewData["idHotelu"] = zdjecie.HotelId;
 
             return View(zdjecie);
         }
 
-        // Potwierdzenie usunięcia zdjęcia - POST
         [HttpPost]
         public async Task<IActionResult> PotwierdzUsuniecieZdjecia(int zdjecieId, int idHotelu)
         {
@@ -183,11 +162,9 @@ namespace BazyDanychProjekt.Controllers
             _context.Zdjecia.Remove(zdjecie);
             await _context.SaveChangesAsync();
 
-            // Przekierowanie do EdytujZdjeciaHotelu z przekazanym idHotelu
             return RedirectToAction(nameof(EdytujZdjeciaHotelu), new { id = idHotelu });
         }
 
-        // Usuwanie hotelu - GET
         public async Task<IActionResult> UsunHotel(int? id)
         {
             if (id == null)
@@ -205,9 +182,8 @@ namespace BazyDanychProjekt.Controllers
             return View(hotel);
         }
 
-        // Usuwanie hotelu - POST
         [HttpPost, ActionName("UsunHotel")]
-        [ValidateAntiForgeryToken] // Dodaj atrybut zabezpieczający przed atakami CSRF
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PotwierdzUsuniecieHotelu(int id)
         {
             var hotel = await _context.Hotele.FindAsync(id);
@@ -216,16 +192,14 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            // Przypisz do modelu inne powiązane encje przed wyświetleniem widoku potwierdzenia
             hotel.Pokoje = await _context.Pokoj.Where(p => p.HotelId == id).ToListAsync();
             hotel.Opinie = await _context.Opinia.Where(o => o.HotelId == id).ToListAsync();
 
             return View(hotel);
         }
 
-        // Potwierdzenie usuwania hotelu - POST
         [HttpPost]
-        [ValidateAntiForgeryToken] // Dodaj atrybut zabezpieczający przed atakami CSRF
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> PotwierdzUsuniecieHoteluPotwierdzenie(int id)
         {
             var hotel = await _context.Hotele.FindAsync(id);
@@ -234,7 +208,6 @@ namespace BazyDanychProjekt.Controllers
                 return NotFound();
             }
 
-            // Usuń powiązane encje przed usunięciem hotelu
             var pokoje = await _context.Pokoj.Where(p => p.HotelId == id).ToListAsync();
             var opinie = await _context.Opinia.Where(o => o.HotelId == id).ToListAsync();
 

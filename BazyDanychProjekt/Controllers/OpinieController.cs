@@ -1,10 +1,12 @@
 ﻿using BazyDanychProjekt.Data;
 using BazyDanychProjekt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BazyDanychProjekt.Controllers
 {
+    [Authorize]
     public class OpinieController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -36,21 +38,16 @@ namespace BazyDanychProjekt.Controllers
         {
             //if (ModelState.IsValid)
             //{
-
-                // Pobierz Id użytkownika z sesji
                 var userId = HttpContext.Session.GetString("UserId");
                 opinia.Data = DateTime.Now;
                 opinia.UzytkownikId = userId;
 
-                // Dodanie opinii do bazy danych
                 _context.Opinia.Add(opinia);
                 _context.SaveChanges();
 
-            // Przekierowanie z powrotem do widoku Szczegoly
             return RedirectToAction("Szczegoly", "Hotele", new { id = opinia.HotelId });
             //}
 
-            // W przypadku błędnych danych, powrót do widoku Szczegoly
             var hotel = _context.Hotele
                 .Include(h => h.Opinie)
                 .FirstOrDefault(h => h.Id == opinia.HotelId);

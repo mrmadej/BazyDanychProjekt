@@ -1,11 +1,13 @@
 ﻿using BazyDanychProjekt.Data;
 using BazyDanychProjekt.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BazyDanychProjekt.Controllers
 {
+    [Authorize]
     public class RezerwacjeController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -20,15 +22,10 @@ namespace BazyDanychProjekt.Controllers
         [HttpPost]
         public async Task<IActionResult> DodajRezerwacje(RezerwacjeViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-                // Sprawdź dostępność pokoju w danym okresie
                 bool czyPokojDostepny = await SprawdzDostepnoscPokoju(model.PokojId, model.DataPoczatek, model.DataKoniec);
 
                 if (czyPokojDostepny)
                 {
-                // Dodaj rezerwację do bazy danych
-
                     var rezerwacja = new Rezerwacja
                     {
                         PokojId = model.PokojId,
@@ -44,7 +41,6 @@ namespace BazyDanychProjekt.Controllers
                 }
                 else
                 {
-                    // Jeśli termin jest zajęty, przekieruj do widoku "Hotele/Szczegoly" z informacją
                     TempData["BladRezerwacji"] = "Termin jest zajęty. Wybierz inny okres.";
                     return RedirectToAction("Szczegoly", "Hotele", new { id = model.HotelId });
                 }
@@ -52,13 +48,9 @@ namespace BazyDanychProjekt.Controllers
 
         public async Task<IActionResult> MojeRezerwacje()
         {
-            // Pobierz aktualnie zalogowanego użytkownika
-            // var user = await _userManager.GetUserAsync(User);
-
-            // Pobierz rezerwacje użytkownika wraz z informacjami o hotelach i pokojach
             var mojeRezerwacje = await _context.Rezerwacja
                 .Include(r => r.Pokoj)
-                    .ThenInclude(p => p.Hotel) // Dodaj to, aby załączyć informacje o hotelu
+                    .ThenInclude(p => p.Hotel)
                 .Where(r => r.UzytkownikId == HttpContext.Session.GetString("UserId"))
                 .ToListAsync();
 
@@ -67,7 +59,6 @@ namespace BazyDanychProjekt.Controllers
 
         private async Task<bool> SprawdzDostepnoscPokoju(int pokojId, DateTime dataRozpoczecia, DateTime dataZakonczenia)
         {
-            // Sprawdź, czy w danym okresie istnieją już rezerwacje dla danego pokoju
             var zajeteTerminy = await _context.Rezerwacja
                 .Where(r => r.PokojId == pokojId)
                 .Where(r => (dataRozpoczecia >= r.DataPoczatek && dataRozpoczecia <= r.DataKoniec) ||

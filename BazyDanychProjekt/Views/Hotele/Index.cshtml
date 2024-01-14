@@ -5,11 +5,11 @@
 
 @foreach (var hotel in Model)
 {
-    <div>
-        <h3><a asp-action="Szczegoly" asp-route-id="@hotel.Id">@hotel.Nazwa</a></h3>
-        <p>@hotel.Kraj</p>
-        <p>@hotel.Miasto</p>
-        <p>@hotel.Opis</p>
-        <img src="@_hoteleService.GetFirstHotelImage(hotel.Id)" alt="Pierwsze zdjecie hotelu" />
+    <div style="border: 1px solid #ddd; padding: 10px; margin-bottom: 20px; border-radius: 5px;">
+        <h3 style="color: #007bff;"><a asp-action="Szczegoly" asp-route-id="@hotel.Id">@hotel.Nazwa</a></h3>
+        <p style="color: #555;">@hotel.Kraj</p>
+        <p style="color: #555;">@hotel.Miasto</p>
+        <p style="color: #555;">@hotel.Opis</p>
+        <img src="@_hoteleService.GetFirstHotelImage(hotel.Id)" alt="Pierwsze zdjecie hotelu" style="max-width: 100%; height: auto; margin-top: 10px;" width="474" height="316" />
     </div>
 }
