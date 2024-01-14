@@ -4,7 +4,7 @@ Aby projekt poprawnie działał, należy (np. w środowisku Visual Studio) sklon
 
 Domyślnie dodany jest jeden użytkownik z uprawnieniami administratora.
 LOGIN: admin
-HASŁO: Pasword1!
+HASŁO: Password1!
 Aby zalogować się jako zwykły użytkownik należy najpierw się zarejestrować
 
 Po wejściu na stronę wyświetli się panel logowania i rejestracji. Po zalogwaniu zwykły użytkownik może przeglądać hotele, rezerwować pokoje w danym przedziale czasowym, dodawać opinie do hoteli oraz przeglądać swoje rezerwacje. Administrator posiada możliwość dodawania. usuwania i edytowania hoteli.
