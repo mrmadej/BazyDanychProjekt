@@ -57,14 +57,12 @@ public class KontoController : Controller
     [HttpPost]
     public async Task<IActionResult> Rejestracja(RejestracjaViewModel model)
     {
-//        if (ModelState.IsValid)
-//        {
-
             var user = new Uzytkownik { UserName=model.Login, Haslo=model.Haslo, Login = model.Login, Imie = model.Imie, Nazwisko = model.Nazwisko, Rola = "Uzytkownik" };
             var result = await _userManager.CreateAsync(user, model.Haslo);
             _logger.LogError("Weszlismy");
             if (result.Succeeded)
             {
+                //await _userManager.AddToRoleAsync(user, "ADMIN");
                 await _signInManager.SignInAsync(user, isPersistent: false);
                 _logger.LogError("Zarejestrowano");
                 return RedirectToAction("Index", "Home");
@@ -75,7 +73,6 @@ public class KontoController : Controller
                 ModelState.AddModelError(string.Empty, error.Description);
                 _logger.LogError($"Błąd rejestracji: {error.Description}");
             }
-  //      }
 
         return View(model);
     }
@@ -83,6 +80,6 @@ public class KontoController : Controller
     public async Task<IActionResult> Wyloguj()
     {
         await _signInManager.SignOutAsync();
-        return RedirectToAction("Index", "Home");
+        return RedirectToAction("Logowanie", "Konto");
     }
 }
