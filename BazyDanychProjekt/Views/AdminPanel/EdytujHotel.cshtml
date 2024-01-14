@@ -14,7 +14,7 @@
     <input type="text" id="Miasto" name="Miasto" value="@Model.Miasto" required />
 
     <label for="Gwiazdki">Gwiazdki:</label>
-    <input type="number" id="Gwiazdki" name="Gwiazdki" value="@Model.Gwiazdki" required />
+    <input type="number" id="Gwiazdki" name="Gwiazdki" value="@Model.Gwiazdki" required min="1" max="5" />
 
     <label for="Opis">Opis:</label>
     <textarea id="Opis" name="Opis" required>@Model.Opis</textarea>
@@ -24,3 +24,4 @@
 
 <!-- Przycisk do przejścia do edycji zdjęć -->
 <a asp-action="EdytujZdjeciaHotelu" asp-route-id="@Model.Id">Edytuj Zdjęcia</a>
+<a asp-action="WyswietlPokoje" asp-route-hotelId="@Model.Id">Edytuj Pokój</a>

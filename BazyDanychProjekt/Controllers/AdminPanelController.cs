@@ -224,5 +224,30 @@ namespace BazyDanychProjekt.Controllers
         {
             return _context.Hotele.Any(e => e.Id == id);
         }
+
+        public async Task<IActionResult> WyswietlPokoje(int hotelId)
+        {
+            var pokoje = await _context.Pokoj
+                .Where(p => p.HotelId == hotelId)
+                .Include(p => p.Hotel)
+                .ToListAsync();
+
+            return View(pokoje);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> DodajPokoj(Pokoj nowyPokoj)
+        {
+
+                // Tutaj możesz dodać logikę sprawdzającą unikalność numeru pokoju, etc.
+
+            _context.Pokoj.Add(nowyPokoj);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction(nameof(WyswietlPokoje), new { hotelId = nowyPokoj.HotelId });
+
+            // Jeśli ModelState.IsValid nie jest spełniony, wróć do widoku z błędami
+        }
+
     }
 }
